@@ -5,6 +5,9 @@ import Home from "../components/home/Home";
 import ListedBooks from "../components/listedbooks/ListedBooks";
 import PageToRead from "../components/pagetoread/PageToRead";
 import BookDetails from "../components/bookDetailes/BookDetails";
+import Admin from "../components/admin/Admin";
+import AddBook from "../components/admin/AddBook";
+import UpdateBookk from "../components/admin/UpdateBookk";
 
 
 // 
@@ -39,6 +42,21 @@ const router = createBrowserRouter([
         
       ]
     },
+    {
+      path:"/admin",
+      element:<Admin/>,
+      loader: ()=> fetch('http://localhost:5000/admin/books')
+
+    },
+    {
+      path:"/admin/books",
+      element:<AddBook/>
+    },
+    {
+      path:"/admin/updateBooks/:id",
+      element:<UpdateBookk/>,
+      loader : ({params})=> fetch(`http://localhost:5000/admin/books/${params.id}`)
+    }
   ]);
 
 
