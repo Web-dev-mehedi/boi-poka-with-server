@@ -7,22 +7,19 @@ import { addToStoredReadList, addToStoredWishList} from "../../utilities/utiliti
 const BookDetails = () => {
     //
     const { bookId } = useParams();
+    console.log(bookId)
     //
     const data = useLoaderData();
 
     // 
-
-
- 
-
   const [active, setActive] = useState(null);
-  console.log(active)
+ 
   const [readBook,setReadBook] = useState([]);
   const handleActive1 = (id) => {
     setActive(true);
     addToStoredReadList(id);
   
-    const book = data.find(item => item.bookId == id);
+    const book = data.find(item => item._id == id);
     const newReadBook = [...readBook,book]
     setReadBook(newReadBook);
 
@@ -34,21 +31,19 @@ const BookDetails = () => {
    
   };
 
-  const bId = Number(bookId);
   // for spicific book by id
   const {
-    bookId: newBookId,
     bookName,
     author,
-    image,
-    review,
-    rating,
+    photoUrl,
+    ratings,
     tags,
     publisher,
     yearOfPublishing,
     totalPages,
     category,
-  } = data.find((book) => book.bookId === bId);
+    bookReview
+  } = data.find((book) => book._id === bookId);
   // 
 
 
@@ -56,7 +51,7 @@ const BookDetails = () => {
   return (
     <div className=" lg:flex justify-between items-start space-y-12 gap-10 py-28">
       <figure className=" w-full lg:w-1/2 mx-auto p-12 sm:p-24 bg-[#f3f3f3] rounded-2xl">
-        <img src={image} alt="book" className="w-full rounded-2xl" />
+        <img src={photoUrl} alt="book" className="w-full rounded-2xl" />
       </figure>
       <div className="w-full lg:w-1/2 mx-auto space-y-10">
         <div>
@@ -69,24 +64,21 @@ const BookDetails = () => {
         </div>
         {/*  */}
         <p className="text-base font-medium text-[#131313c8] border-b border-[#d8d8d8d0] pb-5">
-          {category}
+          Category : {category}
         </p>
         {/*  */}
         <p className="text-base font-normal text-[#1313134f]">
           {" "}
-          <strong className="text-black">Review : </strong> {review}
+          <strong className="text-black">Review : </strong> {bookReview}
         </p>
         {/*  */}
         <div className="flex justify-start items-center gap-6 flex-wrap border-b border-[#d8d8d8d0] pb-7">
-          <span className="text-[#131313] text-base font-bold">Tag</span>
-          {tags.map((i, d) => (
-            <span
-              key={d}
-              className="bg-[#F3F3F3] text-[#23BE0A] rounded-full px-4 py-1 text-base font-medium"
+        <span className="text-[#131313] text-base font-bold">Tag</span>
+        
+            <span className="bg-[#F3F3F3] text-[#23BE0A] rounded-full px-4 py-1 text-base font-medium"
             >
-              # {i}
+              # {tags}
             </span>
-          ))}
         </div>
         {/*  */}
         <div>
@@ -101,7 +93,7 @@ const BookDetails = () => {
               <span>{totalPages}</span>
               <span>{publisher}</span>
               <span>{yearOfPublishing}</span>
-              <span>{rating}</span>
+              <span>{ratings}</span>
             </div>
           </div>
 

@@ -1,7 +1,27 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
+import { AuthContext } from "../../contextApi/AuthProvider";
+import { FaRegUser } from "react-icons/fa";
+import { signOut } from "firebase/auth";
+import { auth } from "../../utilities/firebase.init";
 
 const Header = () => {
+  const { users } = useContext(AuthContext);
+  console.log(users)
+
+// 
+     const handleSignOut = ()=>{
+      useEffect( ()=>{
+        signOut(auth)
+        .then(()=>{
+  
+        }).catch(err=>{
+  
+        })
+        
+      },[])
+  }
+
   return (
     <div className="navbar bg-[#ffffff6d] backdrop-blur-md py-8 border-b border-[#eeeeee87] sticky top-0 z-30">
       <div className="w-11/12 mx-auto flex gap-8 flex-wrap sm:flex-nowrap">
@@ -28,7 +48,7 @@ const Header = () => {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-56 space-y-6 p-5 shadow"
             >
               <NavLink to="/">Home</NavLink>
-              <NavLink to="/listed-books">Listed Books</NavLink>
+               {users&&  <NavLink to="/listed-books">Listed Books</NavLink>}
               <NavLink to="/pages-to-read">Pages to Read</NavLink>
             </ul>
           </div>
@@ -39,17 +59,34 @@ const Header = () => {
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal flex justify-between items-center gap-6 px-1 text-lg font-normal ">
             <NavLink to="/">Home</NavLink>
-            <NavLink to="/listed-books">Listed Books</NavLink>
+            {users&&  <NavLink to="/listed-books">Listed Books</NavLink>}
             <NavLink to="/pages-to-read">Pages to Read</NavLink>
           </ul>
         </div>
         <div className="navbar-end flex gap-4 justify-start sm:justify-end text-right">
-          <Link to="/" className="btn btn-primary">
-            Sign In
-          </Link>
-          <Link to="/" className=" btn btn-success">
-            Sign Up
-          </Link>
+          {!users ? (
+            <>
+            <Link to="/login" className="rounded-full w-12 h-12 bg-slate-400 flex justify-center items-center">
+                <FaRegUser className="text-xl" />
+              </Link>
+              <Link to="/login" className="btn btn-primary">
+                log In
+              </Link>
+              <Link to="/" className=" btn btn-success">
+                Sign Up
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link to="/" className="rounded-full w-12 h-12">
+                 <img src={users?.photoURL} className="rounded-full" alt=""/>
+              </Link>
+                
+              <Link onClick={handleSignOut} to="/" className=" btn btn-success">
+                Sign Out
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import Swal from "sweetalert2"
 
 const AddBook = () => {
     const handleAddBook = (event)=>{
@@ -18,6 +19,7 @@ const AddBook = () => {
     
         const newAddedBook = {bookName,author,photoUrl,ratings,tags,publisher,yearOfPublishing,totalPages,category,bookReview}
         console.log(newAddedBook)
+
         fetch("http://localhost:5000/admin/books",{
              method: "POST",
              headers : {
@@ -28,7 +30,17 @@ const AddBook = () => {
             })
         .then( res => res.json())
         .then(data => {
+
             console.log(data)
+            Swal.fire({
+              title: "Product Added to Your site",
+              icon: "success",
+              confirmButtonColor: "#3085d6",
+            
+             
+            })
+
+            form.reset()
         })
     
       }

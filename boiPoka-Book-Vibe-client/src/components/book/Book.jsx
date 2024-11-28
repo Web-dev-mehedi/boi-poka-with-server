@@ -3,24 +3,20 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 const Book = ({book}) => {
-    const {bookId,bookName,author,image,review,totalPage,rating,tags,publisher,yearOfPublishing,category}= book || {};
+    const {_id,bookName,author,photoUrl,rating,tags,category}= book || {};
 
     return (
-      <Link to={`books/${bookId}`}>
+      <Link to={`books/${_id}`}>
             <div  className="card p-6 border border-[#13131324] rounded-2xl space-y-6">
         <figure className='w-full py-8 bg-[#F3F3F3] rounded-2xl'>
           <img className='w-32 h-44 mx-auto'
-            src={image}
+            src={photoUrl}
             alt="Book"
           />
         </figure>
         <div className="space-y-5">
            <div className="flex justify-start items-start gap-5">
-              {
-                tags.map(item=>(
-                    <span className="bg-[#F3F3F3] text-[#23BE0A] rounded-full px-4 py-1 text-base font-medium">{item}</span>  
-                ))
-                } 
+               <span className="bg-[#F3F3F3] text-[#23BE0A] rounded-full px-4 py-1 text-base font-medium">{tags}</span>  
             </div> 
             {/*  */}
             <div className='space-y-5 border-b-2 border-dashed border-[#13131328] pb-5'>

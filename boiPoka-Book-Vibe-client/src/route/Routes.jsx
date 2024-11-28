@@ -8,6 +8,10 @@ import BookDetails from "../components/bookDetailes/BookDetails";
 import Admin from "../components/admin/Admin";
 import AddBook from "../components/admin/AddBook";
 import UpdateBookk from "../components/admin/UpdateBookk";
+import PrivetRoutes from "./PrivetRoutes";
+import Login from "../auth/Login";
+import AdminPrivetRoute from "./AdminPrivetRoute";
+import AdminLogin from "../components/admin/AdminLogin";
 
 
 // 
@@ -21,42 +25,51 @@ const router = createBrowserRouter([
         {
             path:"/",
             element:<Home/>,
-            loader: ()=> fetch("/data/booksData.json")
+            loader: ()=> fetch("http://localhost:5000/admin/books")
         },
         {
            path:"books/:bookId",
            element:<BookDetails/>,
-           loader: ()=> fetch("/data/booksData.json")
+           loader: ()=> fetch("http://localhost:5000/admin/books")
           
         },
         {
             path:"/listed-books",
-            element:<ListedBooks/>,
-            loader: ()=> fetch("/data/booksData.json")
+            element:<PrivetRoutes><ListedBooks/></PrivetRoutes>,
+            loader: ()=> fetch("http://localhost:5000/admin/books")
         },
         {
            path:"/pages-to-read",
            element:<PageToRead/> ,
-           loader: ()=> fetch("/data/booksData.json")
+           loader: ()=> fetch("http://localhost:5000/admin/books")
         }
-        
+        ,
+        {
+          path:"/login",
+          element:<Login/>
+        }
       ]
     },
     {
       path:"/admin",
-      element:<Admin/>,
+      element:<AdminPrivetRoute><Admin/></AdminPrivetRoute>,
       loader: ()=> fetch('http://localhost:5000/admin/books')
 
     },
     {
       path:"/admin/books",
-      element:<AddBook/>
+      element:<AdminPrivetRoute><AddBook/></AdminPrivetRoute>
     },
     {
       path:"/admin/updateBooks/:id",
-      element:<UpdateBookk/>,
+      element:<AdminPrivetRoute><UpdateBookk/></AdminPrivetRoute>,
       loader : ({params})=> fetch(`http://localhost:5000/admin/books/${params.id}`)
-    }
+    },
+    {
+      path:"/admin/login",
+      element:<AdminLogin/>,
+     
+    },
   ]);
 
 

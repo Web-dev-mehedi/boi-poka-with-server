@@ -1,10 +1,12 @@
 import React from "react";
-import { AiFillEye , AiFillEdit , AiFillDelete } from "react-icons/ai";
+import { AiFillEye, AiFillEdit, AiFillDelete } from "react-icons/ai";
 import { Link } from "react-router-dom";
-const BookCard = ({book}) => {
+import Swal from "sweetalert2";
 
-    const {bookName, author ,photoUrl, tags , totalPages , category, _id} = book || {};
- //    bookId: newBookId,
+const BookCard = ({ book }) => {
+  const { bookName, author, photoUrl, tags, totalPages, category, _id } =
+    book || {};
+  //    bookId: newBookId,
   // bookName,
   // author,
   // image,
@@ -16,20 +18,32 @@ const BookCard = ({book}) => {
   // totalPages,
   // category,
 
-const handleDelete = (id)=>{
-    
-    console.log(id)
-
-    fetch(`http://localhost:5000/admin/books/${id}`,{
-        method: "DELETE"
-    })
-    .then(res=> res.json())
-    .then( data => {
-        console.log(data)
-    })
-}
-
-
+  const handleDelete = (id) => {
+    // 
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`http://localhost:5000/admin/books/${id}`, {
+          method: "DELETE",
+        })
+          .then((res) => res.json())
+          .then(() => {
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your file has been deleted.",
+              icon: "success",
+            });
+          });
+      }
+    });
+  };
 
   return (
     <div className="card card-side items-start flex-wrap bg-[#F5F4F1] shadow-xl rounded-lg p-6">

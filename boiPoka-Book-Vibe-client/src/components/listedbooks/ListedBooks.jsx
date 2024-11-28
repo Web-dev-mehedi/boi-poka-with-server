@@ -25,18 +25,18 @@ const ListedBooks = () => {
   useEffect(() => {
     //   for readList
     const storedReadList = getStoredReadList();
-    const intSoredReadList = storedReadList.map((item) => Number(item));
+    const intSoredReadList = storedReadList.map((item) => item);
     const readBoooks = allBooks.filter((item) =>
-      intSoredReadList.includes(item.bookId)
+      intSoredReadList.includes(item._id)
     );
     setReadList(readBoooks);
     //
 
     //  for wishList
     const storedWishList = getStoredWishList();
-    const intStoredWishList = storedWishList.map((item) => Number(item));
+    const intStoredWishList = storedWishList.map((item) => item);
     const wishBooks = allBooks.filter((item) =>
-      intStoredWishList.includes(item.bookId)
+      intStoredWishList.includes(item._id)
     );
     setWishlist(wishBooks);
   }, []);
@@ -146,7 +146,7 @@ const ListedBooks = () => {
               <div className="space-y-8 md:flex justify-between items-start gap-10 p-6 border border-[#d8d8d8d0] rounded-2xl mb-6 relative">
                 <figure className="w-full md:w-3/12 mx-auto p-10 sm:p-20 md:p-6 lg:p-10 xl:p-20 bg-[#f3f3f3] rounded-2xl">
                   <img
-                    src={item.image}
+                    src={item.photoUrl}
                     alt="book"
                     className="w-full rounded-2xl object-cover"
                   />
@@ -166,14 +166,9 @@ const ListedBooks = () => {
                     <span className="text-[#131313] text-base font-bold">
                       Tag
                     </span>
-                    {item.tags.map((i, d) => (
-                      <span
-                        key={d}
-                        className="bg-[#F3F3F3] text-[#23BE0A] rounded-full px-4 py-1 text-base font-medium"
-                      >
-                        # {i}
+                    <span className="bg-[#F3F3F3] text-[#23BE0A] rounded-full px-4 py-1 text-base font-medium">
+                        # {item.tags}
                       </span>
-                    ))}
                     <span>Year of Publishing : {item.yearOfPublishing}</span>
                   </div>
                   {/*  */}
@@ -196,10 +191,10 @@ const ListedBooks = () => {
                         Category : {item.category}
                       </p>
                       <p className="text-base font-medium text-[#FFAC33] bg-[#ffad332f]  px-6 py-2 rounded-full">
-                        Ratings : {item.rating}
+                        Ratings : {item.ratings}
                       </p>
                       <Link
-                        to={`/books/${item.bookId}`}
+                        to={`/books/${item._id}`}
                         className="text-base font-medium text-[#fff] bg-[#23BE0A]  px-6 py-2 rounded-full"
                       >
                         View Details
@@ -224,7 +219,7 @@ const ListedBooks = () => {
               <div className="space-y-8 md:flex justify-between items-start gap-10 p-6 border border-[#d8d8d8d0] rounded-2xl mb-6 relative">
                 <figure className="w-full md:w-3/12 mx-auto p-10 sm:p-20 md:p-6 lg:p-10 xl:p-20 bg-[#f3f3f3] rounded-2xl">
                   <img
-                    src={item.image}
+                    src={item.photoUrl}
                     alt="book"
                     className="w-full rounded-2xl"
                   />
@@ -244,14 +239,11 @@ const ListedBooks = () => {
                     <span className="text-[#131313] text-base font-bold">
                       Tag
                     </span>
-                    {item.tags.map((i, d) => (
-                      <span
-                        key={d}
-                        className="bg-[#F3F3F3] text-[#23BE0A] rounded-full px-4 py-1 text-base font-medium"
-                      >
-                        # {i}
-                      </span>
-                    ))}
+                  
+                          <span className="bg-[#F3F3F3] text-[#23BE0A] rounded-full px-4 py-1 text-base font-medium">
+                          # {item.tags}
+                        </span>
+                      
                     <span>Year of Publishing : {item.yearOfPublishing}</span>
                   </div>
                   {/*  */}
@@ -274,7 +266,7 @@ const ListedBooks = () => {
                         Category : {item.category}
                       </p>
                       <p className="text-base font-medium text-[#FFAC33] bg-[#ffad332f]  px-6 py-2 rounded-full">
-                        Ratings : {item.rating}
+                        Ratings : {item.ratings}
                       </p>
                       <Link
                         to="/"

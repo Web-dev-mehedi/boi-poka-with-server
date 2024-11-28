@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLoaderData } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const UpdateBookk = () => {
 
@@ -24,18 +25,40 @@ const UpdateBookk = () => {
         const bookReview = form.bookReview.value;
         const updatedBook = {bookName,author,photoUrl,ratings,tags,publisher,yearOfPublishing,totalPages,category,bookReview}
 
-        fetch(`http://localhost:5000/admin/books/${_id}`,{
-             method: "PUT",
-             headers : {
-                'content-type':  'application/json'
-             },
-              body: JSON.stringify(updatedBook)
-            
-            })
-        .then( res => res.json())
-        .then(data => {
-            console.log(data)
-        })
+
+        Swal.fire({
+          title: "Are you sure?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, Update it!"
+        }).then((result) => {
+          if (result.isConfirmed) {
+
+            fetch(`http://localhost:5000/admin/books/${_id}`,{
+              method: "PUT",
+              headers : {
+                 'content-type':  'application/json'
+              },
+               body: JSON.stringify(updatedBook)
+             
+             })
+         .then( res => res.json())
+         .then(data => {
+             console.log(data)
+              Swal.fire({
+              title: "Updated!",
+              text: "Your file has been Updated.",
+              icon: "success"
+            });
+         })
+           
+          }
+        });
+
+
+      
     
       }
     //   
