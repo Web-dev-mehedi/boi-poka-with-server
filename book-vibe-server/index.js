@@ -30,7 +30,9 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     //  
-    const bookCollection = client.db("BookVibeDB").collection("books")
+    const bookCollection = client.db("BookVibeDB").collection("books");
+    const userColllection = client.db("bookVibeUserDB").collection("bookVibeUser");
+    const adminColllection = client.db("bookVibeUserDB").collection("bookVibeAdmin")
     // get all data
     app.get('/admin/books', async(req ,res) =>{ 
         const cursor = bookCollection.find()
@@ -51,7 +53,6 @@ async function run() {
     // post
     app.post('/admin/books', async( req , res ) => {
         const bookData = req.body;
-        console.log(bookData)
         const result = await bookCollection.insertOne(bookData);
         res.send(result)
     })
@@ -60,7 +61,6 @@ async function run() {
 
 app.put('/admin/books/:id' , async(req , res ) => {
       const id = req.params.id
-      console.log(id);
       const filter = { _id : new ObjectId(id) };
       const options = { upsert: true };
       const updateBookInfo = req.body
@@ -74,17 +74,6 @@ app.put('/admin/books/:id' , async(req , res ) => {
       res.send(result)
 }) 
 
-//    bookId: newBookId,
-  // bookName,
-  // author,
-  // image,
-  // review,
-  // rating,
-  // tags,
-  // publisher,
-  // yearOfPublishing,
-  // totalPages,
-  // category,
 
 
     // delete
@@ -92,19 +81,61 @@ app.put('/admin/books/:id' , async(req , res ) => {
     app.delete('/admin/books/:id' , async(req ,res) =>{
 
         const id = req.params.id;
-        console.log(id)
         const query = { _id : new ObjectId(id) };
         const result = await bookCollection.deleteOne(query);
         res.send(result)
     })
 
 
+// user collection
+
+app.get('/users', async(req ,res) =>{
+    const cursor = userColllection.find();
+    const result = await cursor.toArray();
+    res.send(result)
+})
 
 
+// get dat for endpoint
+app.get('/users/:id', async(req , res )=> {
+      const id = req.params.id;
+      console.log(id)
+      const query = { _id : new ObjectId(id) };
+      const result = await userColllection.findOne(query);
+      res.send(result)
+})
+
+// add user data from firebase
+app.post('/users', async ( req, res ) =>{
+    const  userData = req.body;
+    const result = await userColllection.insertOne(userData);
+    res.send(result)
+
+})
+
+// user data delete
+app.delete('/users/:id', async(req ,res)=>{
+     const id = req.params.id;
+     const query = { _id: new ObjectId(id) };
+     const result = await userColllection.deleteOne(query)
+     res.send(result)
+     
+})
 
 
+// delete all
+app.delete('/users', async ( req ,res) =>{
+
+  
+})
 
 
+// get admin data
+app.get("/admin/virus" , async(req , res) =>{
+  const cursor = adminColllection.find();
+    const result = await cursor.toArray();
+    res.send(result)
+})
 
 
 

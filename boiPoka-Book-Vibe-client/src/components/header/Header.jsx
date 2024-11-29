@@ -11,15 +11,12 @@ const Header = () => {
 
 // 
      const handleSignOut = ()=>{
-      useEffect( ()=>{
-        signOut(auth)
-        .then(()=>{
-  
-        }).catch(err=>{
-  
-        })
-        
-      },[])
+      signOut(auth)
+      .then(()=>{
+        alert('signOut Succesfully')
+      }).catch(err=>{
+
+      })
   }
 
   return (

@@ -3,23 +3,12 @@ import { AiFillEye, AiFillEdit, AiFillDelete } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const BookCard = ({ book }) => {
+const BookCard = ({ book , setBookData , newBookData }) => {
   const { bookName, author, photoUrl, tags, totalPages, category, _id } =
     book || {};
-  //    bookId: newBookId,
-  // bookName,
-  // author,
-  // image,
-  // review,
-  // rating,
-  // tags,
-  // publisher,
-  // yearOfPublishing,
-  // totalPages,
-  // category,
 
   const handleDelete = (id) => {
-    // 
+    //
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -40,6 +29,7 @@ const BookCard = ({ book }) => {
               text: "Your file has been deleted.",
               icon: "success",
             });
+            setBookData(newBookData.filter(item => item._id !== id))
           });
       }
     });
@@ -64,9 +54,11 @@ const BookCard = ({ book }) => {
 
       <div className="flex flex-col gap-2 ">
         <button className="btn bg-[#D2B48C] text-[#ffffff] text-xl">
-          <span>
-            <AiFillEye />
-          </span>
+          <Link to={`/books/${_id}`}>
+            <span>
+              <AiFillEye />
+            </span>
+          </Link>
         </button>
         <button className="btn bg-[#3C393B] text-[#ffffff] text-xl">
           <Link to={`/admin/updateBooks/${_id}`}>

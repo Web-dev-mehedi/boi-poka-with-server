@@ -1,4 +1,4 @@
-import {createBrowserRouter,RouterProvider,} from "react-router-dom";
+import {createBrowserRouter} from "react-router-dom";
 import Root from "../components/root/Root";
 import ErrorPage from "../components/errorpage/ErrorPage";
 import Home from "../components/home/Home";
@@ -12,6 +12,7 @@ import PrivetRoutes from "./PrivetRoutes";
 import Login from "../auth/Login";
 import AdminPrivetRoute from "./AdminPrivetRoute";
 import AdminLogin from "../components/admin/AdminLogin";
+import Users from "../components/admin/Users";
 
 
 // 
@@ -46,7 +47,8 @@ const router = createBrowserRouter([
         ,
         {
           path:"/login",
-          element:<Login/>
+          element:<Login/>,
+          loader: ()=> fetch('http://localhost:5000/users') 
         }
       ]
     },
@@ -55,6 +57,11 @@ const router = createBrowserRouter([
       element:<AdminPrivetRoute><Admin/></AdminPrivetRoute>,
       loader: ()=> fetch('http://localhost:5000/admin/books')
 
+    },
+    {
+      path:"/users",
+      element:<AdminPrivetRoute><Users/></AdminPrivetRoute>,
+      loader: ()=> fetch('http://localhost:5000/users') 
     },
     {
       path:"/admin/books",
@@ -68,7 +75,7 @@ const router = createBrowserRouter([
     {
       path:"/admin/login",
       element:<AdminLogin/>,
-     
+      
     },
   ]);
 

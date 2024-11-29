@@ -1,69 +1,61 @@
-import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from 'firebase/auth';
-import React, { createContext, useEffect, useState } from 'react';
-import { auth } from '../utilities/firebase.init';
+import {
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithPopup,
+} from "firebase/auth";
+import React, { createContext, useEffect, useState } from "react";
+import { auth } from "../utilities/firebase.init";
 
+export const AuthContext = createContext();
 
+const AuthProvider = ({ children }) => {
+  const [users, setUsers] = useState(null);
+  const [loader, setLoader] = useState(true);
+  // for admin login
+  const [admin, setAdmin] = useState([]);
 
-export const AuthContext= createContext();
+  const [inAdminlog, setInAdminLog] = useState({});
+  //
 
-const AuthProvider = ({children}) => {
+  // google auth
 
-    const [users , setUsers] = useState(null);
-    const [loader , setLoader] = useState(true);
-    // for admin login
-    const [adminlog , setAdminLog] = useState(null)
-    const [inAdminlog , setInAdminLog] = useState(null)
-      
-    // 
+  const provider = new GoogleAuthProvider();
 
-// google auth
+  const signInWithGoogle = () => {
+    return signInWithPopup(auth, provider);
+  };
 
-const provider = new GoogleAuthProvider();
+  useEffect(() => {
+    //
+    //
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUsers(currentUser);
+        setLoader(false);
+      } else {
+        setLoader(false);
+      }
 
-const signInWithGoogle = ()=>{
-    return signInWithPopup(auth , provider)
-}
+    });
 
+    return unsubscribe;
+  }, [users]);
 
-useEffect(()=>{
-      const unsubscribe = onAuthStateChanged(auth , currentUser =>{
-          if(currentUser){
-                setUsers(currentUser);
-                setLoader(false)
-          }else{
-            setLoader(true)  
-          }
-
-        //   
-          const admin = import.meta.env.VITE_ADMIN_USER;
-          const pass = import.meta.env.VITE_ADMIN_PASS;
-          setAdminLog({admin,pass})
-      })
-      
-      return unsubscribe;
-
-        
-},[])
-
-
-
-const authInfo = {
+  const authInfo = {
     signInWithGoogle,
     setUsers,
     users,
     loader,
     setLoader,
-    adminlog,
+    admin,
+    setAdmin,
     setInAdminLog,
-    inAdminlog
-}
+    inAdminlog,
+  };
 
-
-    return (
-        <AuthContext.Provider value = {authInfo}>
-           {children}
-        </AuthContext.Provider>
-    );
+  return (
+    <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
+  );
 };
 
 export default AuthProvider;

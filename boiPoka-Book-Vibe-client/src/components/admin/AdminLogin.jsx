@@ -14,8 +14,9 @@ const AdminLogin = () => {
       const pass = form.pass.value;
       const adminInfo = {userName , pass};
       setInAdminLog(adminInfo)
-      console.log(adminInfo)
       navigate("/admin")
+      form.reset();
+      alert("login successFully")
     }
 
 
